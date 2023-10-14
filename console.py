@@ -76,4 +76,34 @@ class HBNBCommand(cmd.Cmd):
         except KeyError:
             print(" ***no instance found***")
 
+    def do_destroy(self, args):
+        """
+            Deletes an instance based on the class name and id.
+        """
+        args = shlex.split(args)
+        if len(args) == 0:
+            print("** class name missing **")
+            return
+        elif len(args) == 1:
+            print("** instance id missing **")
+            return
+        class_name = args[0]
+        class_id = args[1]
+        storage = FileStorage()
+        storage.reload()
+        obj_dict = storage.all()
+        try:
+            eval(class_name)
+        except NameError:
+            print("** class doesn't exist **")
+            return
+        key = class_name + "." + class_id
+        try:
+            del obj_dict[key]
+        except KeyError:
+            print("** no instance found **")
+        storage.save()
+    
+    
+
 
