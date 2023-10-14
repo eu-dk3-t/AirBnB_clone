@@ -19,3 +19,10 @@ class HBNBCommand(cmd.Cmd):
             Command to quite and exit the program
         """
         return True
+    
+    def do_EOF(self, args):
+        """
+            Exits after receiving the EOF signal
+        """
+
+        return True
