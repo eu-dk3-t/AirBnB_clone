@@ -4,6 +4,7 @@
     Implementation of the console for the alx AirBnB project
 """
 import cmd
+import shlex
 from models.engine.file_storage import FileStorage
 from models.base_model import BaseModel
 
@@ -26,3 +27,23 @@ class HBNBCommand(cmd.Cmd):
         """
 
         return True
+    
+    def do_create(self, args):
+        """
+            Create a new instance of the BaseModel class and
+            saves it to the JSON file
+        """
+
+        if len(args) == 0:
+            print("***class name is missing***")
+            return
+        
+        try:
+            args = shlex.split(args)
+            new_instance = eval(args[0])()
+            new_instance.save()
+            print(new_instance.id)
+        except:
+            print("***** class doesn't exist ***")
+            
+
