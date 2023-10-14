@@ -104,6 +104,31 @@ class HBNBCommand(cmd.Cmd):
             print("** no instance found **")
         storage.save()
     
+    def do_all(self, args):
+        """"
+            Returns all string representation of all instances
+            based on the class name.
+        """
+        obj_list = []
+        storage = FileStorage()
+        storage.reload()
+        objects = storage.all()
+
+        try:
+            if len(args) != 0:
+                eval(args)
+        except NameError:
+            print("** class doesn't exist **")
+            return
+        for key, val in objects.items():
+            if len(args) != 0:
+                if type(val) is eval(args):
+                    obj_list.append(val)
+            else:
+                obj_list.append(val)
+
+        print(obj_list)
+    
     
 
 
