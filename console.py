@@ -7,6 +7,12 @@ import cmd
 import shlex
 from models.engine.file_storage import FileStorage
 from models.base_model import BaseModel
+from models.user import User
+from models.place import Place
+from models.state import State
+from models.city import City
+from models.amenity import Amenity
+from models.review import Review
 
 class HBNBCommand(cmd.Cmd):
     """
@@ -174,6 +180,52 @@ class HBNBCommand(cmd.Cmd):
             Prevents printing anything when an empty line is passed.
         """
         pass
+
+    def do_count(self, args):
+        """
+            Counts/retrieves the number of instances.
+        """
+        obj_list = []
+        storage = FileStorage()
+        storage.reload()
+        objects = storage.all()
+        try:
+            if len(args) != 0:
+                eval(args)
+        except NameError:
+            print("** class doesn't exist **")
+            return
+        for key, val in objects.items():
+            if len(args) != 0:
+                if type(val) is eval(args):
+                    obj_list.append(val)
+            else:
+                obj_list.append(val)
+        print(len(obj_list))
+
+    def default(self, args):
+        """
+            Catches all the function names that are not expicitly defined.
+        """
+        functions = {"all": self.do_all, "update": self.do_update,
+                     "show": self.do_show, "count": self.do_count,
+                     "destroy": self.do_destroy, "update": self.do_update}
+        args = (args.replace("(", ".").replace(")", ".")
+                .replace('"', "").replace(",", "").split("."))
+
+        try:
+            cmd_arg = args[0] + " " + args[2]
+            func = functions[args[1]]
+            func(cmd_arg)
+        except:
+            print("*** Unknown syntax:", args[0])
+
+
+if __name__ == "__main__":
+    """
+        Entry point for the loop.
+    """
+    HBNBCommand().cmdloop()
 
 
 
