@@ -169,5 +169,12 @@ class HBNBCommand(cmd.Cmd):
         setattr(obj_value, args[2], args[3])
         obj_value.save()
 
+    def emptyline(self):
+        """
+            Prevents printing anything when an empty line is passed.
+        """
+        pass
+
+
 
 
